@@ -768,7 +768,7 @@ def plot_panoramas_rois(
     pano_pos = dict()
     pano_imgs = dict()
     for i, pano in enumerate(spec["Panorama"]):
-        if pano["Description"] == "ROIs":
+        if pano["Description"] == "ROIs" or ".jpg" in pano["Description"]:
             continue
 
         x, y, width, height = get_pano_coords(pano)
