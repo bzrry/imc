@@ -756,7 +756,7 @@ def plot_panoramas_rois(
 
     _spec = yaml.safe_load(open(yaml_spec, "r"))
     assert(len(_spec.keys()) == 1)
-    spec = _spec[_spec.keys()[0]]
+    spec = _spec[list(_spec.keys())[0]]
     w, h = int(spec["Slide"][0]["WidthUm"]), int(spec["Slide"][0]["HeightUm"])
     fkws = dict(bbox_inches="tight")
 
