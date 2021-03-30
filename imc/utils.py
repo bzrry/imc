@@ -700,6 +700,26 @@ def mcd_to_dir(
     #         ac = mcd.get_imc_acquisition(ac_id)
     #         ac.save_image(pjoin(output_dir, f"partition_{partition_id}", ""))
 
+def get_pano_coords(pan):
+    x1, y1 = float(pan["SlideX1PosUm"]), float(pan["SlideY1PosUm"])
+    x2, y2 = float(pan["SlideX2PosUm"]), float(pan["SlideY2PosUm"])
+    x3, y3 = float(pan["SlideX3PosUm"]), float(pan["SlideY3PosUm"])
+    x4, y4 = float(pan["SlideX4PosUm"]), float(pan["SlideY4PosUm"])
+    x = min(x1, x2, x3, x4)
+    y = min(y1, y2, y3, y4)
+    width = max(x1, x2, x3, x4) - x
+    height = max(y1, y2, y3, y4) - y
+    return tuple(map(int, [x, y, width, height]))
+
+def get_roi_coords(acq):
+    # start positions are in a different unit for some reason
+    x1, x2 = float(acq["ROIStartXPosUm"]) / 1000, float(acq["ROIEndXPosUm"])
+    y1, y2 = float(acq["ROIStartYPosUm"]) / 1000, float(acq["ROIEndYPosUm"])
+    x = min(x1, x2)
+    y = min(y1, y2)
+    width = max(x2, x1) - x
+    height = max(y1, y2) - y
+    return tuple(map(int, [x, y, width, height]))
 
 def plot_panoramas_rois(
     yaml_spec: Path,
@@ -727,27 +747,6 @@ def plot_panoramas_rois(
     import seaborn as sns
     import numpy as np
     import pandas as pd
-
-    def get_pano_coords(pan):
-        x1, y1 = float(pan["SlideX1PosUm"]), float(pan["SlideY1PosUm"])
-        x2, y2 = float(pan["SlideX2PosUm"]), float(pan["SlideY2PosUm"])
-        x3, y3 = float(pan["SlideX3PosUm"]), float(pan["SlideY3PosUm"])
-        x4, y4 = float(pan["SlideX4PosUm"]), float(pan["SlideY4PosUm"])
-        x = min(x1, x2, x3, x4)
-        y = min(y1, y2, y3, y4)
-        width = max(x1, x2, x3, x4) - x
-        height = max(y1, y2, y3, y4) - y
-        return tuple(map(int, [x, y, width, height]))
-
-    def get_roi_coords(roi):
-        # start positions are in a different unit for some reason
-        x1, x2 = float(acq["ROIStartXPosUm"]) / 1000, float(acq["ROIEndXPosUm"])
-        y1, y2 = float(acq["ROIStartYPosUm"]) / 1000, float(acq["ROIEndYPosUm"])
-        x = min(x1, x2)
-        y = min(y1, y2)
-        width = max(x2, x1) - x
-        height = max(y1, y2) - y
-        return tuple(map(int, [x, y, width, height]))
 
     if save_roi_arrays:
         assert (
