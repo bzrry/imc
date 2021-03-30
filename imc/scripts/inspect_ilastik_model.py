@@ -2,7 +2,11 @@
 
 import argparse
 import sys
-from typing import Union, List, Literal
+from typing import Union, List
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # 3.7
 
 import h5py
 import numpy as np

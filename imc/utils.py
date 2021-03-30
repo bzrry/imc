@@ -15,9 +15,12 @@ from typing import (
     Sequence,
     Callable,
     Any,
-    Literal,
     overload,
 )
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # 3.7
 
 import numpy as np
 import pandas as pd

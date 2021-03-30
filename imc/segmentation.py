@@ -3,7 +3,11 @@ Segmentation of image stacks using pretrained deep learning models
 such as Stardist and DeepCell.
 """
 
-from typing import Union, Literal, Dict, Tuple
+from typing import Union, Dict, Tuple
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # 3.7
 from functools import partial
 
 import numpy as np

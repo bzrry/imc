@@ -8,7 +8,11 @@ from __future__ import (
 from collections import Counter
 import os
 import re
-from typing import Tuple, List, Optional, Dict, Union, Literal, overload
+from typing import Tuple, List, Optional, Dict, Union, overload
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal  # 3.7
 
 from ordered_set import OrderedSet
 import numpy as np
